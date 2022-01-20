@@ -7,6 +7,7 @@ Este archivo contiene las preguntas que se van a realizar en el laboratorio.
 Utilice los archivos `tbl0.tsv`, `tbl1.tsv` y `tbl2.tsv`, para resolver las preguntas.
 
 """
+from itertools import groupby
 import pandas as pd
 import os
 import sys
@@ -169,7 +170,11 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return tbl0.groupby("_c1")["_c2"].apply(lambda x: "{}:".format(x))
+    tbl0["_c2"]=tbl0["_c2"].values.astype(str)
+    answer=tbl0.groupby("_c1")["_c2"].apply(list).reset_index()
+    answer["_c2"]=answer["_c2"].apply(sorted)
+    answer["_c2"]=answer["_c2"].apply(":".join)
+    return answer
 print(pregunta_10())
 
 def pregunta_11():
@@ -188,7 +193,10 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    answer=tbl1.groupby("_c0")["_c4"].apply(list).reset_index()
+    answer["_c4"]=answer["_c4"].apply(sorted)
+    answer["_c4"]=answer["_c4"].apply(",".join)
+    return answer
 
 
 def pregunta_12():
@@ -206,7 +214,12 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    tbl4=tbl2.copy()
+    tbl4["_c5"]=tbl4["_c5a"]+":"+tbl4["_c5b"].values.astype(str)
+    answer=tbl4.groupby("_c0")["_c5"].apply(list).reset_index()
+    answer["_c5"]=answer["_c5"].apply(sorted)
+    answer["_c5"]=answer["_c5"].apply(",".join)
+    return answer
 
 
 def pregunta_13():
@@ -223,4 +236,5 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    answer=tbl0.merge(tbl2, how='inner', on='_c0')
+    return answer.groupby("_c1")["_c5b"].sum()
