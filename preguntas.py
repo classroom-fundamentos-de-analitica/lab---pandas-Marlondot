@@ -175,7 +175,7 @@ def pregunta_10():
     answer["_c2"]=answer["_c2"].apply(sorted)
     answer["_c2"]=answer["_c2"].apply(":".join)
     return answer
-print(pregunta_10())
+
 
 def pregunta_11():
     """
