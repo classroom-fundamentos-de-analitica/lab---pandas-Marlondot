@@ -171,10 +171,13 @@ def pregunta_10():
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
     tbl0["_c2"]=tbl0["_c2"].values.astype(str)
-    answer=tbl0.groupby("_c1")["_c2"].apply(list).reset_index()
-    answer["_c2"]=answer["_c2"].apply(sorted)
-    answer["_c2"]=answer["_c2"].apply(":".join)
-    return answer
+    answer=tbl0.groupby("_c1")["_c2"].apply(list)
+    
+    finalanswer=pd.DataFrame()
+    finalanswer["_c2"]=answer
+    finalanswer["_c2"]=finalanswer["_c2"].apply(sorted)
+    finalanswer["_c2"]=finalanswer["_c2"].apply(":".join)
+    return finalanswer
 
 
 def pregunta_11():
